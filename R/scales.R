@@ -1,3 +1,11 @@
+#' palava_colors_discrete
+#'set up colors for discrete color scale
+#' @param n
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 palava_colors_discrete <- function(n){
   palava_palette = c("#222755", "#6f768c", "#89121e", "#a77474", "#dbc3c6",
                      "#9f95a2", "#f0efec", "#c0c3cc", "#d1b4b4","#00b9ff")
@@ -14,6 +22,15 @@ palava_colors_continuous <- function(n){
 
 }
 
+#' scale_color_palava_discrete
+#'
+#' @param ...
+#' @param aesthetics
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 scale_color_palava_discrete <- function(...,
                                         aesthetics="color"
                                         ){
@@ -24,6 +41,15 @@ scale_color_palava_discrete <- function(...,
   )
 }
 
+#' scale_fill_palava_discrete
+#'
+#' @param ...
+#' @param aesthetics
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 scale_fill_palava_discrete <- function(...,
                                        aesthetics="fill"
 ){
@@ -35,6 +61,15 @@ scale_fill_palava_discrete <- function(...,
 
 }
 
+#' scale_color_palava_continuous
+#'
+#' @param ...
+#' @param aesthetics
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 scale_color_palava_continuous <- function(...,
                                          aesthetics="color"
 ){
@@ -45,6 +80,15 @@ scale_color_palava_continuous <- function(...,
 
 }
 
+#' scale_fill_palava_continuous
+#'
+#' @param ...
+#' @param aesthetics
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 scale_fill_palava_continuous <- function(...,
                                          aesthetics="fill"
 ){
