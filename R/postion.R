@@ -13,7 +13,7 @@
 createJitterdPoints <- function(
     geometryName,
     geometry,
-    n){
+    n=10){
 data <- data.frame(geometryName=geometryName, geometry=geometry)
 #print(data)
 jitteredPoints <- data %>%
