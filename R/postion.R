@@ -12,32 +12,34 @@
 #' @examples
 #'
 createJitterdPoints <- function(
-    data,
     geometryName,
     geometry,
     n){
-
+data <- data.frame(geometryName=geometryName, geometry=geometry)
+print(data)
 jitteredPoints <- data %>%
-  select({geometry},{geometryName}) %>%
-  distinct() %>%
-  mutate(jitteredPoints= map(geometry, \(x) sf::st_sample(x,n))) %>%
+  dplyr::distinct() %>%
+  dplyr::filter(!sf::st_is_empty(geometry)) %>%
+ dplyr::mutate(jitteredPoints= map(geometry, \(x) sf::st_sample(x,n))) %>%
   tidyr::unnest(jitteredPoints) %>%
-  mutate(pos=dplyr::row_number(),
-         .by=all_of(geometryName)
+  dplyr::mutate(pos=dplyr::row_number(),
+         .by=geometryName
          )
  pts <-  data %>%
     as.data.frame() %>%
     dplyr::mutate(pos= dplyr::row_number(),
-                  .by= dplyr::all_of(geometryName)
+                  .by= geometryName
     ) %>%
-    left_join(jitteredPoints %>%
+    dplyr::left_join(jitteredPoints %>%
                 as.data.frame() %>%
                 dplyr::select(!geometry)
 
                 ,
-              by= dplyr::all_of(c("pos",geometryName))
+              by= c("pos","geometryName")
               ) %>%
-    pull(jitteredPoints)
+    dplyr::pull(jitteredPoints)
+ print(length(data))
+ print(length(pts))
 
   return(pts %>% sf::st_set_crs(sf::st_crs(data)) )
 
