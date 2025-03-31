@@ -1,7 +1,6 @@
 
 #' createJitteredPoints
 #'
-#' @param data
 #' @param geometryName
 #' @param geometry
 #' @param n
@@ -16,7 +15,7 @@ createJitterdPoints <- function(
     geometry,
     n){
 data <- data.frame(geometryName=geometryName, geometry=geometry)
-print(data)
+#print(data)
 jitteredPoints <- data %>%
   dplyr::distinct() %>%
   dplyr::filter(!sf::st_is_empty(geometry)) %>%
@@ -38,8 +37,8 @@ jitteredPoints <- data %>%
               by= c("pos","geometryName")
               ) %>%
     dplyr::pull(jitteredPoints)
- print(length(data))
- print(length(pts))
+ #print(nrow(data))
+ #print(length(pts))
 
   return(pts %>% sf::st_set_crs(sf::st_crs(data)) )
 
