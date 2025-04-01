@@ -7,8 +7,8 @@
 #'
 #' @examples
 palava_colors_discrete <- function(n){
-  palava_palette = c("#89121e","#222755","#f0efec", "#6f768c",  "#a77474", "#dbc3c6",
-                     "#9f95a2",  "#c0c3cc", "#d1b4b4","#00b9ff")
+  palava_palette = c("#89121e","#222755","#d1b4b4","#f0efec", "#6f768c",  "#a77474", "#dbc3c6",
+                     "#9f95a2",  "#c0c3cc", "#00b9ff")
   if(n<=10){
     palava_palette[1:n]
   } else{
