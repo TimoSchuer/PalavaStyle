@@ -46,7 +46,21 @@ jitteredPoints <- data %>%
 
 
 ### Dev horizontal
-
+#' addPositionHorizontal
+#'
+#' @param geometryName
+#' @param geometry
+#' @param n
+#' @param factor
+#' @param left_offset
+#' @param range
+#' @param rowBreak
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+#'
 
 addPositionHorizontal <- function(
   geometryName,
@@ -117,30 +131,3 @@ df <- df %>%
 
 }
 
-
-data %>% 
-  mutate(points= addPositionHorizontal(geometryName= area_name, 
-                                        geometry =  geometry,
-                                      n=n,
-                                      range=c(1,5),
-                                      factor=0.05,
-                                      left_offset = 5000,
-                                      rowBreak=TRUE
-                                      )) %>% 
-  ggplot()+
-  geom_sf(aes(geometry=geometry), alpha=.2) +
-  geom_sf(aes(geometry=points, size=n, color= area_name), 
-          alpha=.5) +
-  guides(color="none")
-
-  
-  ggplot() +
-  geom_sf(data=df,
-    aes(geometry=geometry)) +
-  geom_sf(data= df %>% 
-    sf::st_as_sf(coords=c("x_new", "y"), crs=crs),
-  aes(geometry=geometry, 
-    size=n, color= area_name),
-  alpha=.4
-  ) +
-    guides(color="none")

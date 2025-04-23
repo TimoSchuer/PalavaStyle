@@ -4,7 +4,7 @@
 \alias{createJitterdPoints}
 \title{createJitteredPoints}
 \usage{
-createJitterdPoints(data, geometryName, geometry, n)
+createJitterdPoints(geometryName, geometry, n = 10)
 }
 \arguments{
 \item{n}{}
