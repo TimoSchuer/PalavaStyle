@@ -43,3 +43,104 @@ jitteredPoints <- data %>%
   return(pts %>% sf::st_set_crs(sf::st_crs(data)) )
 
   }
+
+
+### Dev horizontal
+
+
+addPositionHorizontal <- function(
+  geometryName,
+  geometry,
+  n,
+  factor=0.1,
+  left_offset=1000,
+  range=c(1,5),
+  rowBreak=TRUE
+){
+  if(all(sf::st_geometry_type(geometry) != "MULTIPOLYGON")){
+    stop("geometry must be of type MULTIPOLYGON")
+}
+crs <- sf::st_crs(geometry)
+df <- data.frame(geometryName=geometryName, 
+  geometry=geometry,
+  n=n) %>%
+  mutate(pos= dplyr::row_number()) 
+df2 <- df %>% 
+  filter(!sf::st_is_empty(geometry)) %>%
+  mutate(bbox=purrr::map(geometry, \(x) sf::st_bbox(x))) |>
+  mutate(
+    xmin = purrr::map_dbl(bbox, \(x) x[1]),
+    ymin = purrr::map_dbl(bbox, \(x) x[2]),
+    xmax = purrr::map_dbl(bbox, \(x) x[3]),
+    ymax = purrr::map_dbl(bbox, \(x) x[4])
+    ) |>
+    select(-bbox) |> 
+    mutate(x= st_coordinates(st_centroid(geometry) )[,1],
+           y=st_coordinates(st_centroid(geometry) )[,2],
+           n_scaled= scales::rescale(n, to=range),
+           x_width = xmax - xmin,
+           y_width = ymax - ymin
+    ) |> 
+     #arrange(geometryName, n) %>%
+     mutate(offset=n_scaled*x_width/2 * factor ) %>%
+     arrange(desc(n),
+      .by=geometryName
+  ) %>%
+     mutate(offset= cumsum(offset),
+    .by=geometryName
+    ) %>% 
+      mutate(x_new=xmin+left_offset +offset,
+    .by=geometryName
+    )
+
+if(rowBreak){
+  df2 <- df2 %>%
+    mutate(x_new = case_when( x_new > xmax ~ x_new - x_width,
+                      .default =  x_new)) %>% 
+    mutate(y= case_when( x_new > xmax ~ y - y_width/2,
+                         .default =  y)) %>% 
+     sf::st_as_sf(coords=c("x_new", "y"), crs=crs)
+    } else{
+      df2 <- df2 %>% 
+        sf::st_as_sf(coords=c("x_new", "y"), crs=crs)
+    }
+df <- df %>% 
+  select(pos) %>%
+  left_join(df2 %>% select(geometry,pos), 
+  by="pos")
+
+ return(df %>% 
+   arrange(pos) %>% 
+   pull(geometry)
+   )
+
+
+}
+
+
+data %>% 
+  mutate(points= addPositionHorizontal(geometryName= area_name, 
+                                        geometry =  geometry,
+                                      n=n,
+                                      range=c(1,5),
+                                      factor=0.05,
+                                      left_offset = 5000,
+                                      rowBreak=TRUE
+                                      )) %>% 
+  ggplot()+
+  geom_sf(aes(geometry=geometry), alpha=.2) +
+  geom_sf(aes(geometry=points, size=n, color= area_name), 
+          alpha=.5) +
+  guides(color="none")
+
+  
+  ggplot() +
+  geom_sf(data=df,
+    aes(geometry=geometry)) +
+  geom_sf(data= df %>% 
+    sf::st_as_sf(coords=c("x_new", "y"), crs=crs),
+  aes(geometry=geometry, 
+    size=n, color= area_name),
+  alpha=.4
+  ) +
+    guides(color="none")
