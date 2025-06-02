@@ -9,8 +9,9 @@
 palava_colors_discrete <- function(n) {
   palava_palette = c(
     "#89121e",
-    "#d1b4b4",
+    "#e6df17",
     "#222755",
+    "#d1b4b4",
     "#188c81",
     "#5e8720",
     "#6f768c",
