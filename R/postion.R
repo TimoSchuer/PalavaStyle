@@ -116,3 +116,220 @@ addPositionHorizontal <- function(
       pull(geometry)
   )
 }
+#' Position: Sample Points Within Geometries
+#'
+#' Samples random points within each geometry, creating a jittered effect
+#'
+#' @param n Number of points to sample per geometry (default: 10)
+#' @export
+position_sample <- function(n = 10) {
+  ggplot2::ggproto(
+    "PositionSample",
+    ggplot2::Position,
+    n = n,
+
+    compute_panel = function(data, params, scales) {
+      # Group by geometry and sample points
+      data %>%
+        dplyr::group_by(dplyr::across(dplyr::everything())) %>%
+        dplyr::reframe(
+          sampled = list(sf::st_sample(geometry, params$n, type = "random")),
+          .groups = "drop"
+        ) %>%
+        tidyr::unnest_longer(sampled) %>%
+        dplyr::mutate(
+          coords = sf::st_coordinates(sampled),
+          x = coords[, "X"],
+          y = coords[, "Y"]
+        ) %>%
+        dplyr::select(-sampled, -coords)
+    }
+  )
+}
+
+#' Position: Arrange Horizontally with Smart Spacing
+#'
+#' Arranges geometries horizontally with proportional spacing and optional row wrapping
+#'
+#' @param spacing Base spacing factor (default: 0.1)
+#' @param offset Initial horizontal offset (default: 1000)
+#' @param scale_range Range for size-based scaling (default: c(1, 5))
+#' @param wrap_rows Whether to wrap to new rows (default: TRUE)
+#' @export
+position_arrange <- function(
+  spacing = 0.1,
+  offset = 1000,
+  scale_range = c(1, 5),
+  wrap_rows = TRUE
+) {
+  ggplot2::ggproto(
+    "PositionArrange",
+    ggplot2::Position,
+    spacing = spacing,
+    offset = offset,
+    scale_range = scale_range,
+    wrap_rows = wrap_rows,
+
+    compute_panel = function(data, params, scales) {
+      if (!"n" %in% names(data)) {
+        stop("Data must contain column 'n' for scaling")
+      }
+
+      # Calculate layout parameters
+      bbox_data <- data %>%
+        dplyr::mutate(
+          bbox = purrr::map(geometry, sf::st_bbox),
+          width = purrr::map_dbl(bbox, ~ .x["xmax"] - .x["xmin"]),
+          height = purrr::map_dbl(bbox, ~ .x["ymax"] - .x["ymin"]),
+          center_x = purrr::map_dbl(bbox, ~ (.x["xmax"] + .x["xmin"]) / 2),
+          center_y = purrr::map_dbl(bbox, ~ (.x["ymax"] + .x["ymin"]) / 2),
+          scale_factor = scales::rescale(n, to = params$scale_range)
+        )
+
+      # Calculate positions by group
+      positioned_data <- bbox_data %>%
+        dplyr::group_by(
+          if ("geometryName" %in% names(.)) {
+            geometryName
+          } else {
+            dplyr::row_number()
+          }
+        ) %>%
+        dplyr::arrange(dplyr::desc(n)) %>%
+        dplyr::mutate(
+          spacing_width = scale_factor * width * params$spacing / 2,
+          cumulative_offset = cumsum(spacing_width),
+          new_x = bbox[1][[1]]["xmin"] + params$offset + cumulative_offset
+        ) %>%
+        dplyr::ungroup()
+
+      # Apply row wrapping if enabled
+      if (params$wrap_rows) {
+        positioned_data <- positioned_data %>%
+          dplyr::mutate(
+            original_bounds = purrr::map_dbl(bbox, ~ .x["xmax"]),
+            wrapped_x = ifelse(new_x > original_bounds, new_x - width, new_x),
+            wrapped_y = ifelse(
+              new_x > original_bounds,
+              center_y - height / 2,
+              center_y
+            ),
+            x = wrapped_x,
+            y = wrapped_y
+          )
+      } else {
+        positioned_data <- positioned_data %>%
+          dplyr::mutate(x = new_x, y = center_y)
+      }
+
+      positioned_data %>%
+        dplyr::select(dplyr::any_of(names(data)), x, y)
+    }
+  )
+}
+
+#' Position: Distribute Points in Grid
+#'
+#' Alternative approach - distributes points in a regular grid within geometries
+#'
+#' @param n_points Target number of points (actual may vary based on geometry)
+#' @param grid_type Type of grid: "regular", "hexagonal", or "triangular"
+#' @export
+position_distribute <- function(n_points = 10, grid_type = "regular") {
+  ggplot2::ggproto(
+    "PositionDistribute",
+    ggplot2::Position,
+    n_points = n_points,
+    grid_type = grid_type,
+
+    compute_panel = function(data, params, scales) {
+      sample_type <- switch(
+        params$grid_type,
+        "regular" = "regular",
+        "hexagonal" = "hexagonal",
+        "triangular" = "triangular",
+        "regular"
+      )
+
+      data %>%
+        dplyr::rowwise() %>%
+        dplyr::reframe(
+          dplyr::across(dplyr::everything(), ~ rep(.x, params$n_points)),
+          points = list(sf::st_sample(
+            geometry,
+            params$n_points,
+            type = sample_type
+          ))
+        ) %>%
+        tidyr::unnest_longer(points) %>%
+        dplyr::mutate(
+          coords = sf::st_coordinates(points),
+          x = coords[, "X"],
+          y = coords[, "Y"]
+        ) %>%
+        dplyr::select(-points, -coords)
+    }
+  )
+}
+
+#' Convenient geom for sampled points
+#'
+#' @param n Number of points to sample
+#' @param ... Additional arguments passed to geom_sf
+#' @export
+geom_sf_sample <- function(n = 10, ...) {
+  ggplot2::geom_sf(position = position_sample(n), ...)
+}
+
+#' Convenient geom for arranged geometries
+#'
+#' @param spacing Spacing factor
+#' @param offset Initial offset
+#' @param scale_range Scaling range
+#' @param wrap_rows Whether to wrap rows
+#' @param ... Additional arguments passed to geom_sf
+#' @export
+geom_sf_arrange <- function(
+  spacing = 0.1,
+  offset = 1000,
+  scale_range = c(1, 5),
+  wrap_rows = TRUE,
+  ...
+) {
+  ggplot2::geom_sf(
+    position = position_arrange(spacing, offset, scale_range, wrap_rows),
+    ...
+  )
+}
+
+# Usage examples with cleaner syntax:
+#' @examples
+#' library(ggplot2)
+#' library(sf)
+#'
+#' # Sample points within polygons
+#' ggplot(polygon_data) +
+#'   geom_sf_sample(n = 25, alpha = 0.6, size = 0.8) +
+#'   facet_wrap(~region)
+#'
+#' # Or using position directly
+#' ggplot(polygon_data, aes(geometry = geometry)) +
+#'   geom_sf(position = position_sample(15), color = "blue") +
+#'   geom_sf(fill = NA, color = "black") # original boundaries
+#'
+#' # Horizontal arrangement with intelligent spacing
+#' ggplot(polygon_data, aes(geometry = geometry)) +
+#'   geom_sf_arrange(spacing = 0.2, wrap_rows = FALSE) +
+#'   coord_sf(expand = FALSE)
+#'
+#' # Grid-based distribution
+#' ggplot(polygon_data, aes(geometry = geometry)) +
+#'   geom_sf(position = position_distribute(20, "hexagonal")) +
+#'   theme_void()
+#'
+#' # Combine multiple approaches
+#' ggplot(complex_data) +
+#'   geom_sf(data = boundaries, fill = NA) +
+#'   geom_sf_sample(n = 50, aes(color = category), alpha = 0.7) +
+#'   scale_color_viridis_d() +
+#'   theme_minimal()
