@@ -2,7 +2,12 @@
 
 export(addPositionHorizontal)
 export(createJitterdPoints)
+export(geom_sf_arrange)
+export(geom_sf_sample)
 export(palava_colors_discrete)
+export(position_arrange)
+export(position_distribute)
+export(position_sample)
 export(scale_color_palava_continuous)
 export(scale_color_palava_discrete)
 export(scale_fill_palava_continuous)
