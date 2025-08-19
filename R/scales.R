@@ -1,11 +1,16 @@
 #' palava_colors_discrete
 #'set up colors for discrete color scale
-#' @param n
+#' @param n Number of colors to return
 #'
-#' @returns
+#' @returns A character vector of hex color codes
 #' @export
 #'
 #' @examples
+#' # Get first 5 colors from the palette
+#' palava_colors_discrete(5)
+#'
+#' # Get 15 colors (interpolated)
+#' palava_colors_discrete(15)
 palava_colors_discrete <- function(n) {
   palava_palette = c(
     "#89121e",
@@ -35,13 +40,17 @@ palava_colors_continuous <- function(n) {
 
 #' scale_color_palava_discrete
 #'
-#' @param ...
-#' @param aesthetics
+#' @param ... Arguments passed to ggplot2::discrete_scale()
+#' @param aesthetics Character string or vector of aesthetics to apply the scale to
 #'
-#' @returns
+#' @returns A ggplot2 scale object for discrete color aesthetics
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#' ggplot(mtcars, aes(x = mpg, y = wt, color = factor(cyl))) +
+#'   geom_point() +
+#'   scale_color_palava_discrete()
 scale_color_palava_discrete <- function(..., aesthetics = "color") {
   ggplot2::discrete_scale(
     aesthetics = aesthetics,
@@ -52,13 +61,17 @@ scale_color_palava_discrete <- function(..., aesthetics = "color") {
 
 #' scale_fill_palava_discrete
 #'
-#' @param ...
-#' @param aesthetics
+#' @param ... Arguments passed to ggplot2::discrete_scale()
+#' @param aesthetics Character string or vector of aesthetics to apply the scale to
 #'
-#' @returns
+#' @returns A ggplot2 scale object for discrete fill aesthetics
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#' ggplot(mtcars, aes(x = factor(cyl), fill = factor(cyl))) +
+#'   geom_bar() +
+#'   scale_fill_palava_discrete()
 scale_fill_palava_discrete <- function(..., aesthetics = "fill") {
   ggplot2::discrete_scale(
     aesthetics = aesthetics,
@@ -69,13 +82,17 @@ scale_fill_palava_discrete <- function(..., aesthetics = "fill") {
 
 #' scale_color_palava_continuous
 #'
-#' @param ...
-#' @param aesthetics
+#' @param ... Arguments passed to ggplot2::continuous_scale()
+#' @param aesthetics Character string or vector of aesthetics to apply the scale to
 #'
-#' @returns
+#' @returns A ggplot2 scale object for continuous color aesthetics
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#' ggplot(mtcars, aes(x = mpg, y = wt, color = hp)) +
+#'   geom_point() +
+#'   scale_color_palava_continuous()
 scale_color_palava_continuous <- function(..., aesthetics = "color") {
   ggplot2::continuous_scale(
     aesthetics = aesthetics,
@@ -85,13 +102,17 @@ scale_color_palava_continuous <- function(..., aesthetics = "color") {
 
 #' scale_fill_palava_continuous
 #'
-#' @param ...
-#' @param aesthetics
+#' @param ... Arguments passed to ggplot2::continuous_scale()
+#' @param aesthetics Character string or vector of aesthetics to apply the scale to
 #'
-#' @returns
+#' @returns A ggplot2 scale object for continuous fill aesthetics
 #' @export
 #'
 #' @examples
+#' library(ggplot2)
+#' ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+#'   geom_raster() +
+#'   scale_fill_palava_continuous()
 scale_fill_palava_continuous <- function(..., aesthetics = "fill") {
   ggplot2::continuous_scale(
     aesthetics = aesthetics,

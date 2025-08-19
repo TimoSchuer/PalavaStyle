@@ -7,8 +7,19 @@
 scale_color_palava_continuous(..., aesthetics = "color")
 }
 \arguments{
-\item{aesthetics}{}
+\item{...}{Arguments passed to ggplot2::continuous_scale()}
+
+\item{aesthetics}{Character string or vector of aesthetics to apply the scale to}
+}
+\value{
+A ggplot2 scale object for continuous color aesthetics
 }
 \description{
 scale_color_palava_continuous
+}
+\examples{
+library(ggplot2)
+ggplot(mtcars, aes(x = mpg, y = wt, color = hp)) +
+  geom_point() +
+  scale_color_palava_continuous()
 }

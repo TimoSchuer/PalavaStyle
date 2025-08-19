@@ -8,9 +8,19 @@ set up colors for discrete color scale}
 palava_colors_discrete(n)
 }
 \arguments{
-\item{n}{}
+\item{n}{Number of colors to return}
+}
+\value{
+A character vector of hex color codes
 }
 \description{
 palava_colors_discrete
 set up colors for discrete color scale
+}
+\examples{
+# Get first 5 colors from the palette
+palava_colors_discrete(5)
+
+# Get 15 colors (interpolated)
+palava_colors_discrete(15)
 }

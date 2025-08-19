@@ -7,8 +7,19 @@
 scale_fill_palava_discrete(..., aesthetics = "fill")
 }
 \arguments{
-\item{aesthetics}{}
+\item{...}{Arguments passed to ggplot2::discrete_scale()}
+
+\item{aesthetics}{Character string or vector of aesthetics to apply the scale to}
+}
+\value{
+A ggplot2 scale object for discrete fill aesthetics
 }
 \description{
 scale_fill_palava_discrete
+}
+\examples{
+library(ggplot2)
+ggplot(mtcars, aes(x = factor(cyl), fill = factor(cyl))) +
+  geom_bar() +
+  scale_fill_palava_discrete()
 }

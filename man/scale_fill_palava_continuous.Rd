@@ -7,8 +7,19 @@
 scale_fill_palava_continuous(..., aesthetics = "fill")
 }
 \arguments{
-\item{aesthetics}{}
+\item{...}{Arguments passed to ggplot2::continuous_scale()}
+
+\item{aesthetics}{Character string or vector of aesthetics to apply the scale to}
+}
+\value{
+A ggplot2 scale object for continuous fill aesthetics
 }
 \description{
 scale_fill_palava_continuous
+}
+\examples{
+library(ggplot2)
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_fill_palava_continuous()
 }

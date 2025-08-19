@@ -7,8 +7,19 @@
 scale_color_palava_discrete(..., aesthetics = "color")
 }
 \arguments{
-\item{aesthetics}{}
+\item{...}{Arguments passed to ggplot2::discrete_scale()}
+
+\item{aesthetics}{Character string or vector of aesthetics to apply the scale to}
+}
+\value{
+A ggplot2 scale object for discrete color aesthetics
 }
 \description{
 scale_color_palava_discrete
+}
+\examples{
+library(ggplot2)
+ggplot(mtcars, aes(x = mpg, y = wt, color = factor(cyl))) +
+  geom_point() +
+  scale_color_palava_discrete()
 }
