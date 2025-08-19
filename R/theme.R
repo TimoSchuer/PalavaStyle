@@ -63,7 +63,7 @@ theme_palava <- function(
       plot.caption = ggplot2::element_text(
         size = ggplot2::rel(0.8),
         color = palava_medium_grey,
-        hjust = 0,
+        hjust = 1,
         margin = ggplot2::margin(t = 10)
       ),
 
@@ -219,7 +219,7 @@ theme_palava_map <- function(
       plot.caption = ggplot2::element_text(
         size = ggplot2::rel(0.8),
         color = palava_medium_grey,
-        hjust = 0,
+        hjust = 1,
         margin = ggplot2::margin(t = 10)
       ),
 
