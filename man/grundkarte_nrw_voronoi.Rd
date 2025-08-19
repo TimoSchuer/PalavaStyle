@@ -5,6 +5,7 @@
 \title{Grundkarte NRW mit Voronoi-Kacheln}
 \usage{
 grundkarte_nrw_voronoi(
+  data = NULL,
   voronoi_fill = "white",
   voronoi_color = "grey80",
   voronoi_size = 0.2,
@@ -14,6 +15,10 @@ grundkarte_nrw_voronoi(
 )
 }
 \arguments{
+\item{data}{Optional: sf-Objekt mit Daten die auf der Karte dargestellt werden sollen.
+Wenn angegeben, wird das data-Argument an ggplot() weitergegeben und kann in
+nachfolgenden Layern verwendet werden.}
+
 \item{voronoi_fill}{Füllfarbe der Voronoi-Kacheln (Standard: "white")}
 
 \item{voronoi_color}{Randfarbe der Voronoi-Kacheln (Standard: "grey80")}
@@ -49,13 +54,19 @@ grundkarte_nrw_voronoi(
 # Voronoi-Karte ohne NRW-Umriss
 grundkarte_nrw_voronoi(show_outline = FALSE)
 
-# Voronoi-Karte mit Daten und PALAVA-Styling
-grundkarte_nrw_voronoi(voronoi_fill = "white") +
-  geom_sf(data = nrwGemPoints,
-          aes(color = factor(substr(AGS, 1, 2))),
-          size = 1.5) +
+# Voronoi-Karte mit Daten - data Parameter
+grundkarte_nrw_voronoi(data = nrwGemPoints, voronoi_fill = "white") +
+  geom_sf(aes(color = factor(substr(AGS, 1, 2))), size = 1.5) +
   scale_color_palava_discrete(name = "Regierungsbezirk") +
   theme_palava_map() +
   labs(title = "NRW Gemeinden in Voronoi-Kacheln") +
   labs_palava()
+
+# Voronoi-Kacheln eingefärbt nach eigenen Daten
+\dontrun{
+grundkarte_nrw_voronoi(data = my_voronoi_data) +
+  geom_sf(aes(fill = value), color = "white", size = 0.1) +
+  scale_fill_palava_continuous() +
+  theme_palava_map()
+}
 }

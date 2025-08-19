@@ -4,9 +4,18 @@
 \alias{grundkarte_nrw}
 \title{Grundkarte NRW}
 \usage{
-grundkarte_nrw(bg = "lightgrey", outline_color = "black", outline_size = 0.5)
+grundkarte_nrw(
+  data = NULL,
+  bg = "lightgrey",
+  outline_color = "black",
+  outline_size = 0.5
+)
 }
 \arguments{
+\item{data}{Optional: sf-Objekt mit Daten die auf der Karte dargestellt werden sollen.
+Wenn angegeben, wird das data-Argument an ggplot() weitergegeben und kann in
+nachfolgenden Layern verwendet werden.}
+
 \item{bg}{Hintergrundfarbe der Karte (Standard: "lightgrey")}
 
 \item{outline_color}{Farbe des NRW-Umrisses (Standard: "black")}
@@ -30,18 +39,16 @@ grundkarte_nrw()
 # Grundkarte mit angepassten Farben
 grundkarte_nrw(bg = "white", outline_color = "#222755")
 
-# Grundkarte erweitert mit Gemeinden
+# Grundkarte mit Daten - traditionelle Methode
 grundkarte_nrw() +
   geom_sf(data = nrwGemPolygons,
           fill = "transparent",
           color = "grey50",
           size = 0.2)
 
-# Grundkarte mit Daten und PALAVA-Styling
-grundkarte_nrw(bg = "#f0efec") +
-  geom_sf(data = nrwGemPoints,
-          aes(color = AGS),
-          size = 1) +
+# Grundkarte mit Daten - data Parameter
+grundkarte_nrw(data = nrwGemPoints) +
+  geom_sf(aes(color = AGS), size = 1) +
   scale_color_palava_discrete() +
   theme_palava_map() +
   labs(title = "NRW Gemeindezentren") +
