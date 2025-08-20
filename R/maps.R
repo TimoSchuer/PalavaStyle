@@ -162,3 +162,33 @@ grundkarte_nrw_voronoi <- function(
     ggplot2::coord_sf(crs = sf::st_crs(nrwVoronoi), expand = FALSE) +
     ggplot2::theme_void()
 }
+
+#' Create Point Map from Annotations
+#'
+#' Creates a map of NRW with points from annotation data for a specific task.
+#' The map uses grundkarte_nrw as base and adds points from the annotations.
+#'
+#' @param conAnn A DBI connection object to the annotations database
+#' @param conPalava A DBI connection object to the PALAVA database
+#' @param task_id Numeric. The task ID to filter annotations
+#' @param type Character. The type of annotations to filter
+#' @param ... Additional arguments passed to grundkarte_nrw()
+#'
+#' @returns A ggplot2 object with the point map, or NULL if no data found
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Create basic point map
+#' create_point_map(conAnn, conPalava, 111, "point")
+#'
+#' # Point map with custom background
+#' create_point_map(
+#'   conAnn, conPalava, 111, "point",
+#'   bg = "#f0efec",
+#'   outline_color = "#222755"
+#' ) +
+#'   theme_palava_map() +
+#'   labs_palava()
+#' }
+#'
