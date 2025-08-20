@@ -180,10 +180,10 @@ grundkarte_nrw_voronoi <- function(
 #' @examples
 #' \dontrun{
 #' # Create basic point map
-#' create_point_map(conAnn, conPalava, 111, "point")
+#' createPointMap(conAnn, conPalava, 111, "Annotation_Lexik")
 #'
 #' # Point map with custom background
-#' create_point_map(
+#' createPointMap(
 #'   conAnn, conPalava, 111, "point",
 #'   bg = "#f0efec",
 #'   outline_color = "#222755"
@@ -192,3 +192,16 @@ grundkarte_nrw_voronoi <- function(
 #'   labs_palava()
 #' }
 #'
+createPointMap <- function(conAnn, conPalava, task_id, type, ...) {
+  # Get point data
+  point_data <- createDataPointMap(conAnn, conPalava, task_id, type)
+
+  # Return NULL if no data found
+  if (is.null(point_data)) {
+    return(NULL)
+  }
+
+  # Create base map with points
+  grundkarte_nrw(data = point_data, ...) +
+    ggplot2::geom_sf(size = 2, color = "#89121e")
+}
