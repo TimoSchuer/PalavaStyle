@@ -4,7 +4,15 @@
 \alias{createPointMap}
 \title{Create Point Map from Annotations}
 \usage{
-createPointMap(conAnn, conPalava, task_id, type, ...)
+createPointMap(
+  conAnn,
+  conPalava,
+  task_id,
+  type,
+  position = "identity",
+  position_args = list(),
+  ...
+)
 }
 \arguments{
 \item{conAnn}{A DBI connection object to the annotations database}
@@ -14,6 +22,10 @@ createPointMap(conAnn, conPalava, task_id, type, ...)
 \item{task_id}{Numeric. The task ID to filter annotations}
 
 \item{type}{Character. The type of annotations to filter}
+
+\item{position}{Position adjustment function (e.g., "identity", "jitter", "dodge"). Default: "identity"}
+
+\item{position_args}{List of arguments passed to the position function (e.g., list(width = 0.2))}
 
 \item{...}{Additional arguments passed to grundkarte_nrw()}
 }
@@ -26,17 +38,25 @@ The map uses grundkarte_nrw as base and adds points from the annotations.
 }
 \examples{
 \dontrun{
-# Create basic point map
+# Basic point map
 createPointMap(conAnn, conPalava, 111, "Annotation_Lexik")
 
-# Point map with custom background
+# Point map with jittered points
 createPointMap(
-  conAnn, conPalava, 111, "point",
+  conAnn, conPalava, 111, "Annotation_Lexik",
+  position = "sf_dodge",
+  position_args = list(width = 0.2)
+)
+
+# Point map with custom background and dodged points
+createPointMap(
+  conAnn, conPalava, 111, "Annotation_Lexik",
   bg = "#f0efec",
-  outline_color = "#222755"
+  outline_color = "#222755",
+  position = "sf_dodge",
+  position_args = list(width = 0.5)
 ) +
   theme_palava_map() +
   labs_palava()
 }
-
 }

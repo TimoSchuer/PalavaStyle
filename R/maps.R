@@ -172,6 +172,8 @@ grundkarte_nrw_voronoi <- function(
 #' @param conPalava A DBI connection object to the PALAVA database
 #' @param task_id Numeric. The task ID to filter annotations
 #' @param type Character. The type of annotations to filter
+#' @param position Position adjustment function (e.g., "identity", "jitter", "dodge"). Default: "identity"
+#' @param position_args List of arguments passed to the position function (e.g., list(width = 0.2))
 #' @param ... Additional arguments passed to grundkarte_nrw()
 #'
 #' @returns A ggplot2 object with the point map, or NULL if no data found
@@ -179,20 +181,36 @@ grundkarte_nrw_voronoi <- function(
 #'
 #' @examples
 #' \dontrun{
-#' # Create basic point map
+#' # Basic point map
 #' createPointMap(conAnn, conPalava, 111, "Annotation_Lexik")
 #'
-#' # Point map with custom background
+#' # Point map with jittered points
 #' createPointMap(
-#'   conAnn, conPalava, 111, "point",
+#'   conAnn, conPalava, 111, "Annotation_Lexik",
+#'   position = "sf_dodge",
+#'   position_args = list(width = 0.2)
+#' )
+#'
+#' # Point map with custom background and dodged points
+#' createPointMap(
+#'   conAnn, conPalava, 111, "Annotation_Lexik",
 #'   bg = "#f0efec",
-#'   outline_color = "#222755"
+#'   outline_color = "#222755",
+#'   position = "sf_dodge",
+#'   position_args = list(width = 0.5)
 #' ) +
 #'   theme_palava_map() +
 #'   labs_palava()
 #' }
-#'
-createPointMap <- function(conAnn, conPalava, task_id, type, ...) {
+createPointMap <- function(
+  conAnn,
+  conPalava,
+  task_id,
+  type,
+  position = "identity",
+  position_args = list(),
+  ...
+) {
   # Get point data
   point_data <- createDataPointMap(conAnn, conPalava, task_id, type)
 
@@ -201,7 +219,16 @@ createPointMap <- function(conAnn, conPalava, task_id, type, ...) {
     return(NULL)
   }
 
+  # Create position object with args
+  pos <- do.call(
+    paste0("position_", position),
+    position_args
+  )
+
   # Create base map with points
   grundkarte_nrw(data = point_data, ...) +
-    ggplot2::geom_sf(aes(geometry = geom, color = value))
+    ggplot2::geom_sf(
+      aes(geometry = geom, color = value),
+      position = pos
+    )
 }
