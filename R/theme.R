@@ -140,7 +140,9 @@ theme_palava <- function(
 #'
 #'
 labs_palava <- function() {
-  ggplot2::labs(caption = "Quelle: PALAVA-App (LWL und LVR)")
+  ggplot2::labs(
+    caption = paste("Quelle: PALAVA-App (LWL und LVR) \n Stand:", Sys.Date())
+  )
 }
 
 
