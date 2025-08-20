@@ -203,5 +203,5 @@ createPointMap <- function(conAnn, conPalava, task_id, type, ...) {
 
   # Create base map with points
   grundkarte_nrw(data = point_data, ...) +
-    ggplot2::geom_sf(size = 2, color = "#89121e")
+    ggplot2::geom_sf(aes(geometry = geom, color = value))
 }

@@ -74,6 +74,10 @@ createDataPointMap <- function(conAnn, conPalava, task_id, type) {
     warning("No matching survey results found for the annotations")
     return(NULL)
   }
+  result <- result |>
+    as.data.frame() |>
+    dplyr::summarise(n = dplyr::n(), .by = c(area_name, value)) |>
+    dplyr::mutate(prop = n / sum(n), .by = area_name)
 
   # Join with spatial points
   result <- result |>
@@ -166,6 +170,9 @@ createDataAreaMap <- function(conAnn, conPalava, task_id, type) {
     warning("No matching survey results found for the annotations")
     return(NULL)
   }
+  result <- result |>
+    summarise(n = n(), .by = c(area_name, value)) |>
+    mutate(prop = n / sum(n), .by = area_name)
 
   # Join with Voronoi polygons
   result <- result |>
