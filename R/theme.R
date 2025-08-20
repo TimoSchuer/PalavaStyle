@@ -61,7 +61,7 @@ theme_palava <- function(
         margin = ggplot2::margin(b = 10)
       ),
       plot.caption = ggplot2::element_text(
-        size = ggplot2::rel(0.8),
+        size = ggplot2::rel(0.4),
         color = palava_medium_grey,
         hjust = 1,
         margin = ggplot2::margin(t = 10)
