@@ -141,7 +141,7 @@ theme_palava <- function(
 #'
 labs_palava <- function() {
   ggplot2::labs(
-    caption = paste("Quelle: PALAVA-App (LWL und LVR) \n Stand:", Sys.Date())
+    caption = paste("Quelle: PALAVA-App (Stand: ", Sys.Date(), ")", sep = "")
   )
 }
 
@@ -219,7 +219,7 @@ theme_palava_map <- function(
         margin = ggplot2::margin(b = 10)
       ),
       plot.caption = ggplot2::element_text(
-        size = ggplot2::rel(0.8),
+        size = ggplot2::rel(0.4),
         color = palava_medium_grey,
         hjust = 1,
         margin = ggplot2::margin(t = 10)
