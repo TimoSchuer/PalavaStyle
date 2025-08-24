@@ -228,7 +228,8 @@ theme_palava_map <- function(
       # Legend elements - keep PALAVA styling
       legend.title = ggplot2::element_text(
         color = palava_dark_blue,
-        size = ggplot2::rel(0.9)
+        size = ggplot2::rel(0.9),
+        margin = margin(b = 5)
       ),
       legend.text = ggplot2::element_text(
         color = palava_dark_blue,

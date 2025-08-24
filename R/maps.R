@@ -93,7 +93,7 @@ grundkarte_nrw <- function(
 #' # Voronoi-Karte mit angepassten Farben
 #' grundkarte_nrw_voronoi(
 #'   voronoi_fill = "#f0efec",
-#'   voronoi_color = "#222755"
+#'   voronoi_color = "#222755ff"
 #' )
 #'
 #' # Voronoi-Karte ohne NRW-Umriss
@@ -195,7 +195,7 @@ grundkarte_nrw_voronoi <- function(
 #' createPointMap(
 #'   conAnn, conPalava, 111, "Annotation_Lexik",
 #'   bg = "#f0efec",
-#'   outline_color = "#222755",
+#'   outline_color = "#222755b7",
 #'   position = "sf_dodge",
 #'   position_args = list(width = 0.5)
 #' ) +
