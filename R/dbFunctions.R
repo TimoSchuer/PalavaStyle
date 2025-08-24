@@ -81,11 +81,11 @@ createDataPointMap <- function(conAnn, conPalava, task_id, type) {
 
   # Join with spatial points
   result <- result |>
-    as.data.frame()
-  dplyr::left_join(
-    nrwGemPoints |> dplyr::select(GN, geom),
-    by = c("area_name" = "GN")
-  )
+    as.data.frame() |>
+    dplyr::left_join(
+      nrwGemPoints |> dplyr::select(GN, geom),
+      by = c("area_name" = "GN")
+    )
 
   # Check if any spatial points were matched
   if (all(is.na(result$geom))) {
