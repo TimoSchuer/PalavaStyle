@@ -4,10 +4,25 @@
 \alias{scale_color_palava_continuous}
 \title{scale_color_palava_continuous}
 \usage{
-scale_color_palava_continuous(..., aesthetics = "color")
+scale_color_palava_continuous(
+  name = "Anteil (in \%)",
+  limits = c(0, 100),
+  alpha_low = 0.2,
+  na.value = "white",
+  ...,
+  aesthetics = "color"
+)
 }
 \arguments{
-\item{...}{Arguments passed to ggplot2::continuous_scale()}
+\item{name}{Legend title (default: "Anteil (in \%)")}
+
+\item{limits}{Numeric vector of length 2, giving range of the scale (default: c(0, 100))}
+
+\item{alpha_low}{Alpha value for low end of gradient (default: 0.2)}
+
+\item{na.value}{Color to use for NA values (default: "white")}
+
+\item{...}{Additional arguments passed to ggplot2::scale_color_gradient()}
 
 \item{aesthetics}{Character string or vector of aesthetics to apply the scale to}
 }
@@ -15,11 +30,21 @@ scale_color_palava_continuous(..., aesthetics = "color")
 A ggplot2 scale object for continuous color aesthetics
 }
 \description{
-scale_color_palava_continuous
+Creates a continuous color scale using PALAVA colors with gradient from transparent to solid.
 }
 \examples{
 library(ggplot2)
-ggplot(mtcars, aes(x = mpg, y = wt, color = hp)) +
+
+# Basic usage
+ggplot(faithfuld, aes(x = waiting, y = eruptions, color = density)) +
   geom_point() +
   scale_color_palava_continuous()
+
+# Custom limits and name
+ggplot(faithfuld, aes(x = waiting, y = eruptions, color = density)) +
+  geom_point() +
+  scale_color_palava_continuous(
+    name = "Density",
+    limits = c(0, 0.1)
+  )
 }

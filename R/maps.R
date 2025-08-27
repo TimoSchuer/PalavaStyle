@@ -21,7 +21,7 @@
 #' grundkarte_nrw()
 #'
 #' # Grundkarte mit angepassten Farben
-#' grundkarte_nrw(bg = "white", outline_color = "#222755")
+#' grundkarte_nrw(bg = "#f8f8f8ff", outline_color = "#222755")
 #'
 #' # Grundkarte mit Daten - traditionelle Methode
 #' grundkarte_nrw() +
@@ -40,7 +40,7 @@
 #'   theme(legend.position = "none")
 grundkarte_nrw <- function(
   data = NULL,
-  bg = "lightgrey",
+  bg = "#f8f8f8ff",
   outline_color = "black",
   outline_size = 0.5
 ) {
@@ -92,7 +92,7 @@ grundkarte_nrw <- function(
 #'
 #' # Voronoi-Karte mit angepassten Farben
 #' grundkarte_nrw_voronoi(
-#'   voronoi_fill = "#f0efec",
+#'   voronoi_fill = "#f8f8f8ff",
 #'   voronoi_color = "#222755ff"
 #' )
 #'
@@ -116,7 +116,7 @@ grundkarte_nrw <- function(
 #' }
 grundkarte_nrw_voronoi <- function(
   data = NULL,
-  voronoi_fill = "white",
+  voronoi_fill = "#f8f8f8ff",
   voronoi_color = "grey80",
   voronoi_size = 0.2,
   outline_color = "black",

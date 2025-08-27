@@ -6,7 +6,7 @@
 \usage{
 grundkarte_nrw_voronoi(
   data = NULL,
-  voronoi_fill = "white",
+  voronoi_fill = "#f8f8f8ff",
   voronoi_color = "grey80",
   voronoi_size = 0.2,
   outline_color = "black",
@@ -47,8 +47,8 @@ grundkarte_nrw_voronoi()
 
 # Voronoi-Karte mit angepassten Farben
 grundkarte_nrw_voronoi(
-  voronoi_fill = "#f0efec",
-  voronoi_color = "#222755"
+  voronoi_fill = "#f8f8f8ff",
+  voronoi_color = "#222755ff"
 )
 
 # Voronoi-Karte ohne NRW-Umriss

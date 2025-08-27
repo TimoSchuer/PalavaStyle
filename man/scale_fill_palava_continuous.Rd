@@ -4,10 +4,25 @@
 \alias{scale_fill_palava_continuous}
 \title{scale_fill_palava_continuous}
 \usage{
-scale_fill_palava_continuous(..., aesthetics = "fill")
+scale_fill_palava_continuous(
+  name = "Anteil (in \%)",
+  limits = c(0, 100),
+  alpha_low = 0.2,
+  na.value = "white",
+  ...,
+  aesthetics = "fill"
+)
 }
 \arguments{
-\item{...}{Arguments passed to ggplot2::continuous_scale()}
+\item{name}{Legend title (default: "Anteil (in \%)")}
+
+\item{limits}{Numeric vector of length 2, giving range of the scale (default: c(0, 100))}
+
+\item{alpha_low}{Alpha value for low end of gradient (default: 0.2)}
+
+\item{na.value}{Color to use for NA values (default: "white")}
+
+\item{...}{Additional arguments passed to ggplot2::scale_fill_gradient()}
 
 \item{aesthetics}{Character string or vector of aesthetics to apply the scale to}
 }
@@ -15,11 +30,21 @@ scale_fill_palava_continuous(..., aesthetics = "fill")
 A ggplot2 scale object for continuous fill aesthetics
 }
 \description{
-scale_fill_palava_continuous
+Creates a continuous fill scale using PALAVA colors with gradient from transparent to solid.
 }
 \examples{
 library(ggplot2)
+
+# Basic usage
 ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
   geom_raster() +
   scale_fill_palava_continuous()
+
+# Custom limits and name
+ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+  geom_raster() +
+  scale_fill_palava_continuous(
+    name = "Density",
+    limits = c(0, 0.1)
+  )
 }

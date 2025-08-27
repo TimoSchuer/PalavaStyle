@@ -20,10 +20,10 @@ palava_colors_discrete <- function(n) {
     "#188c81",
     "#5e8720",
     "#6f768c",
+    "#00b9ff",
     "#f8d37b",
     "#85658f",
-    "#00b9ff",
-    "#dbc3c6",
+    "#f5bdc4ff",
     "#9f95a2",
     "#c0c3cc"
   )
@@ -80,29 +80,15 @@ scale_fill_palava_discrete <- function(..., aesthetics = "fill") {
   )
 }
 
-#' scale_color_palava_continuous
-#'
-#' @param ... Arguments passed to ggplot2::continuous_scale()
-#' @param aesthetics Character string or vector of aesthetics to apply the scale to
-#'
-#' @returns A ggplot2 scale object for continuous color aesthetics
-#' @export
-#'
-#' @examples
-#' library(ggplot2)
-#' ggplot(mtcars, aes(x = mpg, y = wt, color = hp)) +
-#'   geom_point() +
-#'   scale_color_palava_continuous()
-scale_color_palava_continuous <- function(..., aesthetics = "color") {
-  ggplot2::continuous_scale(
-    aesthetics = aesthetics,
-    palette = palava_colors_continuous
-  )
-}
-
 #' scale_fill_palava_continuous
 #'
-#' @param ... Arguments passed to ggplot2::continuous_scale()
+#' Creates a continuous fill scale using PALAVA colors with gradient from transparent to solid.
+#'
+#' @param name Legend title (default: "Anteil (in %)")
+#' @param limits Numeric vector of length 2, giving range of the scale (default: c(0, 100))
+#' @param alpha_low Alpha value for low end of gradient (default: 0.2)
+#' @param na.value Color to use for NA values (default: "white")
+#' @param ... Additional arguments passed to ggplot2::scale_fill_gradient()
 #' @param aesthetics Character string or vector of aesthetics to apply the scale to
 #'
 #' @returns A ggplot2 scale object for continuous fill aesthetics
@@ -110,12 +96,84 @@ scale_color_palava_continuous <- function(..., aesthetics = "color") {
 #'
 #' @examples
 #' library(ggplot2)
+#'
+#' # Basic usage
 #' ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
 #'   geom_raster() +
 #'   scale_fill_palava_continuous()
-scale_fill_palava_continuous <- function(..., aesthetics = "fill") {
-  ggplot2::continuous_scale(
-    aesthetics = aesthetics,
-    palette = palava_colors_continuous
+#'
+#' # Custom limits and name
+#' ggplot(faithfuld, aes(x = waiting, y = eruptions, fill = density)) +
+#'   geom_raster() +
+#'   scale_fill_palava_continuous(
+#'     name = "Density",
+#'     limits = c(0, 0.1)
+#'   )
+scale_fill_palava_continuous <- function(
+  name = "Anteil (in %)",
+  limits = c(0, 100),
+  alpha_low = 0.2,
+  na.value = "white",
+  ...,
+  aesthetics = "fill"
+) {
+  base_color <- palava_colors_discrete(1)
+
+  ggplot2::scale_fill_gradient(
+    name = name,
+    limits = limits,
+    low = scales::alpha(base_color, alpha_low),
+    high = base_color,
+    na.value = na.value,
+    ...
+  )
+}
+
+#' scale_color_palava_continuous
+#'
+#' Creates a continuous color scale using PALAVA colors with gradient from transparent to solid.
+#'
+#' @param name Legend title (default: "Anteil (in %)")
+#' @param limits Numeric vector of length 2, giving range of the scale (default: c(0, 100))
+#' @param alpha_low Alpha value for low end of gradient (default: 0.2)
+#' @param na.value Color to use for NA values (default: "white")
+#' @param ... Additional arguments passed to ggplot2::scale_color_gradient()
+#' @param aesthetics Character string or vector of aesthetics to apply the scale to
+#'
+#' @returns A ggplot2 scale object for continuous color aesthetics
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' # Basic usage
+#' ggplot(faithfuld, aes(x = waiting, y = eruptions, color = density)) +
+#'   geom_point() +
+#'   scale_color_palava_continuous()
+#'
+#' # Custom limits and name
+#' ggplot(faithfuld, aes(x = waiting, y = eruptions, color = density)) +
+#'   geom_point() +
+#'   scale_color_palava_continuous(
+#'     name = "Density",
+#'     limits = c(0, 0.1)
+#'   )
+scale_color_palava_continuous <- function(
+  name = "Anteil (in %)",
+  limits = c(0, 100),
+  alpha_low = 0.2,
+  na.value = "white",
+  ...,
+  aesthetics = "color"
+) {
+  base_color <- palava_colors_discrete(1)
+
+  ggplot2::scale_color_gradient(
+    name = name,
+    limits = limits,
+    low = scales::alpha(base_color, alpha_low),
+    high = base_color,
+    na.value = na.value,
+    ...
   )
 }

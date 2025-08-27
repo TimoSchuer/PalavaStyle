@@ -6,7 +6,7 @@
 \usage{
 grundkarte_nrw(
   data = NULL,
-  bg = "lightgrey",
+  bg = "#f8f8f8ff",
   outline_color = "black",
   outline_size = 0.5
 )
@@ -37,7 +37,7 @@ library(sf)
 grundkarte_nrw()
 
 # Grundkarte mit angepassten Farben
-grundkarte_nrw(bg = "white", outline_color = "#222755")
+grundkarte_nrw(bg = "#f8f8f8ff", outline_color = "#222755")
 
 # Grundkarte mit Daten - traditionelle Methode
 grundkarte_nrw() +

@@ -52,7 +52,7 @@ createPointMap(
 createPointMap(
   conAnn, conPalava, 111, "Annotation_Lexik",
   bg = "#f0efec",
-  outline_color = "#222755",
+  outline_color = "#222755b7",
   position = "sf_dodge",
   position_args = list(width = 0.5)
 ) +
