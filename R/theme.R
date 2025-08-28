@@ -45,7 +45,7 @@ theme_palava <- function(
     base_family = base_family,
     base_line_size = base_line_size,
     base_rect_size = base_rect_size
-  ) +
+  ) %+replace%
     ggplot2::theme(
       # Text elements
       text = ggplot2::element_text(color = palava_dark_blue),
@@ -111,7 +111,8 @@ theme_palava <- function(
       strip.background = ggplot2::element_rect(
         fill = palava_dark_blue,
         color = NA
-      )
+      ),
+      complete = TRUE
     )
 }
 
@@ -207,7 +208,7 @@ theme_palava_map <- function(
     base_family = base_family,
     base_line_size = base_line_size,
     base_rect_size = base_rect_size
-  ) +
+  ) %+replace%
     ggplot2::theme(
       # Text elements - keep PALAVA styling
       text = ggplot2::element_text(color = palava_dark_blue),
@@ -253,6 +254,7 @@ theme_palava_map <- function(
       strip.background = ggplot2::element_rect(
         fill = palava_dark_blue,
         color = NA
-      )
+      ),
+      complete = TRUE
     )
 }
