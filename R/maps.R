@@ -58,11 +58,11 @@ grundkarte_nrw <- function(
       fill = bg,
       color = outline_color,
       linewidth = outline_size
-    ) +
-    # Koordinatensystem optimiert für NRW
-    ggplot2::coord_sf(crs = sf::st_crs(nrwShape), expand = FALSE) +
-    # Basis-Theme für Karten
-    ggplot2::theme_void()
+    ) #+
+  # Koordinatensystem optimiert für NRW
+  #ggplot2::coord_sf(crs = sf::st_crs(nrwShape), expand = FALSE) +
+  # Basis-Theme für Karten
+  # ggplot2::theme_void()
 }
 
 #' Grundkarte NRW mit Voronoi-Kacheln
@@ -158,9 +158,9 @@ grundkarte_nrw_voronoi <- function(
   }
 
   # Koordinatensystem und Theme
-  p +
-    ggplot2::coord_sf(crs = sf::st_crs(nrwVoronoi), expand = FALSE) +
-    ggplot2::theme_void()
+  p #+
+  #ggplot2::coord_sf(crs = sf::st_crs(nrwVoronoi), expand = FALSE) +
+  #ggplot2::theme_void()
 }
 
 #' Create Point Map from Annotations
