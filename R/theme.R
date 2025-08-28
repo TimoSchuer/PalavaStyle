@@ -87,6 +87,10 @@ theme_palava <- function(
         color = palava_dark_blue,
         size = ggplot2::rel(0.8)
       ),
+      legend.key = ggplot2::element_rect(
+        size = ggplot2::unit(base_rect_size, "pt"),
+        color = "transparent",
+      ),
 
       # Panel elements
       panel.grid.major = ggplot2::element_line(
@@ -234,6 +238,10 @@ theme_palava_map <- function(
       legend.text = ggplot2::element_text(
         color = palava_dark_blue,
         size = ggplot2::rel(0.8)
+      ),
+      legend.key = ggplot2::element_rect(
+        size = ggplot2::unit(base_rect_size, "pt"),
+        color = "transparent",
       ),
 
       # Strip elements for facets - keep PALAVA styling
